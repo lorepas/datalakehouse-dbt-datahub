@@ -17,7 +17,9 @@ docker compose up -d
   - **DataHub:** accedere a http://localhost:9002 (usa username/password configurati per DataHub).
 
 **Configurazioni importanti**
-- **Bucket MinIO su Dremio:** assicurarsi di impostare le opzioni S3 corrette in Dremio, ad es.: `fs.s3a.path.style.access` e `fs.s3a.endpoint` verso MinIO.
+- **Bucket MinIO su Dremio:** assicurarsi di impostare le opzioni S3 corrette in Dremio. Occorre disabilitare l'encryption e tra le impostazioni avanzate occorre spuntare l'opzione `Enable compatibility mode` ed aggiungere le seguenti proprietà: 
+  - `fs.s3a.path.style.access`: `true`
+  - `fs.s3a.endpoint`: `minio:9000`
 
 **Configurazione ambiente Python**
 - Crea e attiva virtualenv con Python 3.11:
@@ -48,6 +50,8 @@ source:
     username: <username>
     password: <password>
     ingest_owner: true
+    stateful_ingestion:
+        enabled: true
 ```
 
 **Uso / Comandi**
@@ -103,7 +107,9 @@ datahub ingest -c datahub-recipe.yml
 ```
 
 **Riferimenti**
+- https://docs.dremio.com/current/data-sources/object/s3/#configuring-s3-compatible-storage
 - https://github.com/dremio/dbt-dremio/blob/main/docs/walkthrough.md
-- https://docs.dremio.com/cloud/sonar/client-apps/dbt/
+- https://docs.dremio.com/current/data-products/deploy-with-dbt
 - https://docs.getdbt.com/docs/build/sources
 - https://docs.datahub.com/docs/generated/ingestion/sources/dremio
+- https://docs.datahub.com/docs/generated/ingestion/sources/dbt
